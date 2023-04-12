@@ -53,7 +53,7 @@ class PlanetTracker():
                     if takePictures:
                         self.piCamera.take_picture(pictureTime=inputTime, picturedPlanet=self.trackedPlanet)
                 except Exception as e:
-                    print(e.message)
+                    print(str(e))
                     tracking = False
 
     def get_tracked_planet(self):
