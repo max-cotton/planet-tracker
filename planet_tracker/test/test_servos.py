@@ -1,5 +1,5 @@
 import unittest
-from planet_tracker.main import *
+from servos import Servos
 
 class TestServos(unittest.TestCase):
     def test_servo_limits(self):
