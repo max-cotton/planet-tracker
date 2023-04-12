@@ -1,6 +1,9 @@
 # Pimoroni PanTiltHAT planet tracker
 ## Track planets above the horizon
 
+## Run
+Run with 'python3 planet_tracker'
+
 ## Configuration
 Add the following configurations to a config.json file, in the root directory of the project:
 
