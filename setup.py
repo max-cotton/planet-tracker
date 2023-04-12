@@ -13,5 +13,6 @@ setup(
             'picamera',
             'pytz',
             'requests',
+            'smbus',
     ],
 )
