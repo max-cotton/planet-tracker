@@ -2,7 +2,7 @@
 ## Track planets above the horizon
 
 ## Configuration
-Add the following configurations to a config.json file in the planet_tracker package:
+Add the following configurations to a config.json file, in the root directory of the project:
 
 | Configuration   | Value                                                                    |
 | --------------- | ------------------------------------------------------------------------ |
