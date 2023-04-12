@@ -22,6 +22,4 @@ Add the following configurations to a config.json file, in the root directory of
 - Use 'python3 -m unittest discover planet_tracker/test/' to run tests
 
 ## TODO
-- Add error message for planet going below horizon
-- Add logging
 - Telescope

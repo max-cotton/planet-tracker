@@ -1,5 +1,6 @@
 import datetime
 import json
+import logging
 import time
 import pytz
 from cameras import PiCamera
@@ -53,7 +54,7 @@ class PlanetTracker():
                     if takePictures:
                         self.piCamera.take_picture(pictureTime=inputTime, picturedPlanet=self.trackedPlanet)
                 except Exception as e:
-                    print(str(e))
+                    logging.error(str(e))
                     tracking = False
 
     def get_tracked_planet(self):
