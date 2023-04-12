@@ -26,3 +26,4 @@ Add the following configurations to a config.json file, in the root directory of
 
 ## TODO
 - Telescope
+- 3D printer
