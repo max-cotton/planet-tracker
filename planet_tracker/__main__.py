@@ -1,7 +1,7 @@
 import datetime
 import json
-import pytz
 import time
+import pytz
 from cameras import PiCamera
 from servos import PanTiltServos
 from apis import PlanetAPI
@@ -40,7 +40,8 @@ class PlanetTracker():
         while tracking:
             self.panTiltServos.tilt(planets[self.trackedPlanet]['altitude'])
             self.panTiltServos.pan(-(180 - planets[self.trackedPlanet]['azimuth']))
-            if time.time() >= (updateTime + 5):  # Update planet data every 5 seconds
+            # Update planet data every 5 seconds
+            if time.time() >= (updateTime + 5):
                 if predictPath:
                     inputTime += timeIncrease
                 else:
@@ -52,7 +53,7 @@ class PlanetTracker():
                     if takePictures:
                         self.piCamera.take_picture(pictureTime=inputTime, picturedPlanet=self.trackedPlanet)
                 except Exception as e:
-                    print(e)
+                    print(e.message)
                     tracking = False
 
     def get_tracked_planet(self):

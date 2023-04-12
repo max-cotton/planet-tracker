@@ -23,4 +23,5 @@ Add the following configurations to a config.json file, in the root directory of
 
 ## TODO
 - Add error message for planet going below horizon
+- Add logging
 - Telescope

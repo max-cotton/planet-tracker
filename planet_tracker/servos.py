@@ -1,5 +1,5 @@
-import pantilthat
 import time
+import pantilthat
 
 class PanTiltServos():  # NOTE: Currently the servos take left and down as positive, so is currently adjusted to that in these methods
     def __init__(self):
