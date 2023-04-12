@@ -10,7 +10,7 @@ from apis import PlanetAPI
 class PlanetTracker():
     def __init__(self):
         self.configData = self.load_Config()
-        self.planetAPI = PlanetAPI(latitude=self.configData['latitude'], longitude=self.configData['longitude'])
+        self.planetAPI = PlanetAPI(latitude=self.configData['latitude'], longitude=self.configData['longitude'], elevation=self.configData['elevation'])
         self.panTiltServos = PanTiltServos()
         self.piCamera = None
         self.trackedPlanet = None
