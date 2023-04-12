@@ -17,7 +17,9 @@ Add the following configurations to a config.json file, in the root directory of
 - Create a virtualenv with 'python3 -m venv {venv name}'
 - Use 'source ./virtualenv/bin/activate' to enter venv
 - Use pip as normal in the venv
-- Use 'python3 setup.py develop' to setup preferences of setup.py (packages)
+- Use 'python3 setup.py develop' to setup preferences of setup.py (install package to venv in developing mode)
+### Tests
+- Use 'python3 -m unittest discover planet_tracker/test/' to run tests
 
 ## TODO
 - Add error message for planet going below horizon
