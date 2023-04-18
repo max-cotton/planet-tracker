@@ -1,6 +1,7 @@
 import datetime
 import json
 import logging
+import sys
 import time
 import pytz
 from cameras import PiCamera
@@ -15,11 +16,57 @@ class PlanetTracker():
         self.piCamera = None
         self.trackedPlanet = None
 
-    def load_Config(self):
-        configFile = open('config.json')
-        configData = json.load(configFile)
-        configFile.close()
+    def setup_config(self, configData):
+        # Setup base configuration
+        configurations = ['latitude','longitude','elevation','timeZone','predictTracking','takePictures','imagesPath']
+        for configuration in configurations:
+            if configuration not in configData.keys():
+                configData[configuration] = ''
+                
+        # Check configurations
+        try:
+            if int(configData['latitude']) < -90 or int(configData['latitude']) > 90:
+                raise ValueError("Latitude not within -90 to 90 degrees")
+        except ValueError as ve:
+            logging.error("Invalid latitude configuration")
+            logging.error(str(ve))
+            sys.exit()
+        try:
+            if int(configData['longitude']) < -180 or int(configData['longitude']) > 180:
+                raise ValueError("Longitude not within -180 to 180 degrees")
+        except ValueError as ve:
+            logging.error("Invalid longitude configuration")
+            logging.error(str(ve))
+            sys.exit()
+        try:
+            if int(configData['elevation']) < 0:
+                raise ValueError("Elevation not greater than 0 meters")
+        except ValueError as ve:
+            logging.error("Invalid elevation configuration")
+            logging.error(str(ve))
+            sys.exit()
+        try:
+            if configData['timeZone'] not in pytz.all_timezones:
+                raise ValueError("Time zone not in possible arguements")
+        except ValueError as ve:
+            logging.error("Invalid time zone configuration")
+            logging.error(str(ve))
+            sys.exit()
+        if configData['takePictures'] == 'True' and not configData['imagesPath']:
+            logging.error("Take Pictures mode is selected, but no path to store the images is configured")
+            sys.exit()
         return configData
+
+    def load_Config(self):
+        try:
+            configFile = open('config.json')
+            configData = json.load(configFile)
+            configFile.close()
+        except Exception as e:
+            logging.error("Failed to load config.json")
+            logging.error(str(e))
+            sys.exit()
+        return self.setup_config(configData)
 
     def track_planet(self):
         inputTime = datetime.datetime.now(pytz.timezone(self.configData['timeZone']))
@@ -49,13 +96,13 @@ class PlanetTracker():
                     inputTime = datetime.datetime.now(pytz.timezone(self.configData['timeZone']))
                 planets = self.planetAPI.fetch_data(inputTime=inputTime)
                 updateTime = time.time()
-                try:
+                if self.trackedPlanet not in planets.keys():
+                    print("Planet is now below horizon")
+                    tracking = False
+                else:
                     print(f"Time: {inputTime}\n{planets[self.trackedPlanet]}\n")
                     if takePictures:
                         self.piCamera.take_picture(pictureTime=inputTime, picturedPlanet=self.trackedPlanet)
-                except Exception as e:
-                    logging.error(str(e))
-                    tracking = False
 
     def get_tracked_planet(self):
         inputTime = datetime.datetime.now(pytz.timezone(self.configData['timeZone']))  # ISO format = YYYY-MM-DD HH:MM:SS.mmmmmm

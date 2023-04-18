@@ -30,5 +30,6 @@ Add the following configurations to a config.json file, in the root directory of
 - Planet API: https://github.com/csymlstd/visible-planets-api
 
 ## TODO
+- Add custom time between photos
 - Telescope
 - 3D printer
