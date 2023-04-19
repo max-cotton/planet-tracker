@@ -7,11 +7,11 @@ class PlanetAPI():
         self.ELEVATION = elevation
         self.URL = "https://api.visibleplanets.dev/v3?latitude=32&=-98"
 
-    def fetch_data(self, inputTime):
+    def fetch_data(self, currentTime):
         params = {'latitude':self.LATITUDE, 
                   'longitude':self.LONGITUDE,
                   'elevation':self.ELEVATION,
-                  'time':inputTime,}
+                  'time':currentTime,}
         data = requests.get(self.URL, params).json()
         planets = {}
         for planet in data['data']:

@@ -4,7 +4,7 @@ import logging
 import sys
 import time
 import pytz
-from cameras import PiCamera
+#from cameras import PiCamera
 from servos import PanTiltServos
 from apis import PlanetAPI
 
@@ -52,9 +52,17 @@ class PlanetTracker():
             logging.error("Invalid time zone configuration")
             logging.error(str(ve))
             sys.exit()
-        if configData['takePictures'] == 'True' and not configData['imagesPath']:
-            logging.error("Take Pictures mode is selected, but no path to store the images is configured")
-            sys.exit()
+        if configData['takePictures'] == 'True':
+            if not configData['imagesPath']:
+                logging.error("Take Pictures mode is selected, but no path to store the images is configured")
+                sys.exit()
+            try:
+                if int(configData['pictureDelayTime']) < 0:
+                    raise ValueError("Time delay between taking pictures not greater than 0 seconds")
+            except ValueError as ve:
+                logging.error("Invalid pictureDelayTime configuration")
+                logging.error(str(ve))
+                sys.exit()
         return configData
 
     def load_Config(self):
@@ -69,45 +77,48 @@ class PlanetTracker():
         return self.setup_config(configData)
 
     def track_planet(self):
-        inputTime = datetime.datetime.now(pytz.timezone(self.configData['timeZone']))
-        planets = self.planetAPI.fetch_data(inputTime=inputTime)
-        updateTime = time.time()
+        currentTime = datetime.datetime.now(pytz.timezone(self.configData['timeZone']))
+        planets = self.planetAPI.fetch_data(currentTime=currentTime)
+        apiFetchtime = time.time()
 
         # Setup predicted path
         predictPath = True if self.configData['predictTracking'] == "True" else False 
-        timeIncrease = datetime.timedelta(minutes=10)
+        trackingTimeIncrease = datetime.timedelta(minutes=10)
 
         # Setup take pictures
         takePictures = True if self.configData['takePictures'] == "True" else False
         if takePictures:
             self.piCamera = PiCamera(imagesPath=self.configData['imagesPath'])
+            pictureTakenTime = time.time()
+            pictureDelayTime = int(self.configData['pictureDelayTime'])
 
-        trackingMode = f"Predicting path with time increase of {timeIncrease}" if predictPath else "Normal tracking"
+        trackingMode = f"Predicting path with time increase of {trackingTimeIncrease}" if predictPath else "Normal tracking"
         print(f"Tracking : {self.trackedPlanet}\nMode : {trackingMode}\n")
         tracking = True
         while tracking:
             self.panTiltServos.tilt(planets[self.trackedPlanet]['altitude'])
             self.panTiltServos.pan(-(180 - planets[self.trackedPlanet]['azimuth']))
             # Update planet data every 5 seconds
-            if time.time() >= (updateTime + 5):
+            if time.time() >= (apiFetchtime + 5):
                 if predictPath:
-                    inputTime += timeIncrease
+                    currentTime += trackingTimeIncrease
                 else:
-                    inputTime = datetime.datetime.now(pytz.timezone(self.configData['timeZone']))
-                planets = self.planetAPI.fetch_data(inputTime=inputTime)
-                updateTime = time.time()
+                    currentTime = datetime.datetime.now(pytz.timezone(self.configData['timeZone']))
+                planets = self.planetAPI.fetch_data(currentTime=currentTime)
+                apiFetchtime = time.time()
                 if self.trackedPlanet not in planets.keys():
                     print("Planet is now below horizon")
                     tracking = False
                 else:
-                    print(f"Time: {inputTime}\n{planets[self.trackedPlanet]}\n")
-                    if takePictures:
-                        self.piCamera.take_picture(pictureTime=inputTime, picturedPlanet=self.trackedPlanet)
+                    print(f"Time: {currentTime}\n{planets[self.trackedPlanet]}\n")
+                    if takePictures and time.time() >= (pictureTakenTime + pictureDelayTime):
+                        self.piCamera.take_picture(pictureTime=currentTime, picturedPlanet=self.trackedPlanet)
+                        pictureTakenTime = time.time()
 
     def get_tracked_planet(self):
-        inputTime = datetime.datetime.now(pytz.timezone(self.configData['timeZone']))  # ISO format = YYYY-MM-DD HH:MM:SS.mmmmmm
-        planets = self.planetAPI.fetch_data(inputTime=inputTime)
-        print(f"\nTime: {inputTime}\n")
+        currentTime = datetime.datetime.now(pytz.timezone(self.configData['timeZone']))  # ISO format = YYYY-MM-DD HH:MM:SS.mmmmmm
+        planets = self.planetAPI.fetch_data(currentTime=currentTime)
+        print(f"\nTime: {currentTime}\n")
         self.planetAPI.read_data(planets)
         while self.trackedPlanet not in planets.keys():
             self.trackedPlanet = input("Enter the name of one of the planets above to track: ")
