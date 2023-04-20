@@ -1,3 +1,5 @@
+import logging
+import sys
 import requests
 
 class PlanetAPI():
@@ -12,7 +14,12 @@ class PlanetAPI():
                   'longitude':self.LONGITUDE,
                   'elevation':self.ELEVATION,
                   'time':currentTime,}
-        data = requests.get(self.URL, params).json()
+        try:
+            data = requests.get(self.URL, params).json()
+        except requests.ConnectionError as e:
+            logging.error("Failed to connect to API")
+            logging.error(str(e))
+            sys.exit()
         planets = {}
         for planet in data['data']:
             planets[planet['name']] = {'altitude':planet['altitude'],        # Altitude = Veritcal angle above horizon
