@@ -17,7 +17,7 @@ Add the following configurations to a config.json file, in the root directory of
 | predictTracking  | True or False to track the planet at 10 minutes for every 5 seconds      |
 | takePictures     | True or False to take a picture with the attached camera every 5 seconds | 
 | imagesPath       | Full path to the location to store pictures taken                        |
-| pictureDelayTime | Time delay between taking pictures in seconds                            |
+| pictureDelayTime | Time delay between taking pictures in seconds, minimum is 5 seconds      |
 
 ## Dev Setup
 - Create a virtualenv with 'python3 -m venv {venv name}'

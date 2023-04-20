@@ -57,8 +57,8 @@ class PlanetTracker():
                 logging.error("Take Pictures mode is selected, but no path to store the images is configured")
                 sys.exit()
             try:
-                if int(configData['pictureDelayTime']) < 0:
-                    raise ValueError("Time delay between taking pictures not greater than 0 seconds")
+                if int(configData['pictureDelayTime']) < 5:
+                    raise ValueError("Time delay between taking pictures not greater than 5 seconds")
             except ValueError as ve:
                 logging.error("Invalid pictureDelayTime configuration")
                 logging.error(str(ve))
