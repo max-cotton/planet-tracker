@@ -4,7 +4,7 @@ import logging
 import sys
 import time
 import pytz
-#from cameras import PiCamera
+from cameras import PiCamera
 from servos import PanTiltServos
 from apis import PlanetAPI
 

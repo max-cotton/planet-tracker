@@ -8,16 +8,16 @@ Run with 'python3 planet_tracker'
 ## Configuration
 Add the following configurations to a config.json file, in the root directory of the project:
 
-| Configuration   | Value                                                                    |
-| --------------- | ------------------------------------------------------------------------ |
-| latitude        | Latitude of PanTiltHAT                                                   |
-| longitude       | Longitude of PanTiltHAT                                                  |
-| elevation       | Elevation of PanTiltHAT above sea level in meters                        |
-| timeZone        | Timezone from python library pytz                                        |
-| predictTracking | True or False to track the planet at 10 minutes for every 5 seconds      |
-| takePictures    | True or False to take a picture with the attached camera every 5 seconds | 
-| imagesPath      | Full path to the location to store pictures taken                        |
-| pictureDelayTime| Time delay between taking pictures in seconds                            |
+| Configuration    | Value                                                                    |
+| ---------------- | ------------------------------------------------------------------------ |
+| latitude         | Latitude of PanTiltHAT                                                   |
+| longitude        | Longitude of PanTiltHAT                                                  |
+| elevation        | Elevation of PanTiltHAT above sea level in meters                        |
+| timeZone         | Timezone from python library pytz                                        |
+| predictTracking  | True or False to track the planet at 10 minutes for every 5 seconds      |
+| takePictures     | True or False to take a picture with the attached camera every 5 seconds | 
+| imagesPath       | Full path to the location to store pictures taken                        |
+| pictureDelayTime | Time delay between taking pictures in seconds                            |
 
 ## Dev Setup
 - Create a virtualenv with 'python3 -m venv {venv name}'
