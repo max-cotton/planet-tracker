@@ -29,7 +29,3 @@ Add the following configurations to a config.json file, in the root directory of
 ### Documentation
 - PanTiltHAT: http://docs.pimoroni.com/pantilthat/
 - Planet API: https://github.com/csymlstd/visible-planets-api
-
-## TODO
-- Telescope
-- 3D printer
