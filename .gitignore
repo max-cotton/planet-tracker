@@ -4,6 +4,5 @@ __pycache__/
 # Packaging
 *.egg-info
 
-# Devlopment
+# Project config file
 config.json
-venv/
