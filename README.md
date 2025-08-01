@@ -7,7 +7,7 @@ Track planets above the horizon with a PanTiltHat.
 1. Download the Repository with:
 
    - ```
-     git clone https://github.com/mcttn22/planet-tracker.git
+     git clone https://github.com/max-cotton/planet-tracker.git
      ```
    - Or by downloading as a ZIP file
 
